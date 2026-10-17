@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="pt-BR" data-ui="pt"
+      data-title-pt="Monólito Primeiro · Guia de Arquitetura"
+      data-title-en="Monolith First · Architecture Guide">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Monólito Primeiro · Guia de Arquitetura</title>
+  <meta name="description" content="Monolith First: começar com um monólito e só depois dividir em microsserviços. Resumo, vantagens, desvantagens e impacto na gestão do projeto.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="ax1">
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="index.html">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+        <rect x="2" y="2" width="22" height="6" rx="1.5" fill="#c2410c"/>
+        <rect x="2" y="10" width="22" height="6" rx="1.5" fill="#0e7490"/>
+        <rect x="2" y="18" width="22" height="6" rx="1.5" fill="#6d28d9"/>
+      </svg>
+      <span><span data-lang="pt">Guia de Arquitetura</span><span data-lang="en">Architecture Guide</span> <b>/ GP</b></span>
+    </a>
+    <nav class="nav" aria-label="Páginas" data-aria-pt="Páginas" data-aria-en="Pages">
+      <a href="index.html"><span data-lang="pt">Início</span><span data-lang="en">Home</span></a>
+      <a href="monolith-first.html" aria-current="page"><span data-lang="pt">Monólito Primeiro</span><span data-lang="en">Monolith First</span></a>
+      <a href="legacy-displacement.html"><span data-lang="pt">Substituição de Legado</span><span data-lang="en">Legacy Displacement</span></a>
+      <a href="layering.html"><span data-lang="pt">Camadas</span><span data-lang="en">Layering</span></a>
+    </nav>
+    <div class="lang" role="group" aria-label="Idioma / Language">
+      <button type="button" data-set-lang="pt" aria-pressed="true">PT</button>
+      <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="post-hero">
+    <a class="back" href="index.html"><span data-lang="pt">← Voltar ao início</span><span data-lang="en">← Back to home</span></a>
+    <br>
+    <span class="axis-tag"><span data-lang="pt">Eixo 1 · Microsserviços</span><span data-lang="en">Axis 1 · Microservices</span></span>
+    <h1><span data-lang="pt">Monólito Primeiro</span><span data-lang="en">Monolith First</span></h1>
+    <p class="orig-title"><span data-lang="pt">Título original: </span><span data-lang="en">Original title: </span><em>Monolith First</em></p>
+    <p class="lead">
+      <span data-lang="pt">Mesmo que o sistema pareça destinado a ser grande, a recomendação é nascer como um monólito bem organizado e só dividir em microsserviços quando — e se — isso for necessário.</span>
+      <span data-lang="en">Even if a system looks destined to be large, the advice is to start as a well-organized monolith and split into microservices only when, and if, it becomes necessary.</span>
+    </p>
+    <dl class="meta">
+      <div><dt><span data-lang="pt">Autor</span><span data-lang="en">Author</span></dt><dd>Martin Fowler</dd></div>
+      <div><dt><span data-lang="pt">Publicado</span><span data-lang="en">Published</span></dt><dd><span data-lang="pt">3 jun. 2015</span><span data-lang="en">3 Jun 2015</span></dd></div>
+      <div><dt><span data-lang="pt">Formato</span><span data-lang="en">Format</span></dt><dd><span data-lang="pt">Post curto (bliki)</span><span data-lang="en">Short post (bliki)</span></dd></div>
+    </dl>
+  </section>
+
+  <nav class="toc" aria-label="Nesta página">
+    <a href="#resumo"><span data-lang="pt">1 · Resumo</span><span data-lang="en">1 · Summary</span></a>
+    <a href="#pros"><span data-lang="pt">2 · Vantagens e desvantagens</span><span data-lang="en">2 · Pros and cons</span></a>
+    <a href="#gestao"><span data-lang="pt">3 · Impacto na gestão</span><span data-lang="en">3 · Management impact</span></a>
+    <a href="#original"><span data-lang="pt">4 · Post original</span><span data-lang="en">4 · Original post</span></a>
+  </nav>
+
+  <!-- 1. RESUMO -->
+  <section class="block" id="resumo">
+    <h2><span class="num">01</span><span data-lang="pt">Resumo da ideia central</span><span data-lang="en">Summary of the central idea</span></h2>
+
+    <p data-lang="pt">Fowler parte de um padrão que ele e seus colegas observaram nas histórias de times que usam microsserviços: quase todos os casos de sucesso começaram como um monólito que cresceu demais e depois foi dividido; já os sistemas que nasceram como microsserviços desde o primeiro dia, na maioria das vezes, acabaram em sérias dificuldades.</p>
+    <p data-lang="en">Fowler starts from a pattern he and his colleagues noticed in stories from teams using microservices: almost every success started as a monolith that grew too big and was then split up, while systems built as microservices from day one mostly ended up in serious trouble.</p>
+
+    <p data-lang="pt">A explicação está no chamado <em>custo extra</em> dos microsserviços (o "Microservice Premium"): administrar um conjunto de serviços separados consome tempo e esforço, e isso só compensa em sistemas realmente complexos.</p>
+    <p data-lang="en">The explanation lies in the so-called <em>Microservice Premium</em>: managing a suite of separate services costs time and effort, and that only pays off for genuinely complex systems.</p>
+
+    <figure class="diagram" role="img" aria-label="Diagrama: o caminho que costuma dar certo começa com um monólito que depois é dividido; o caminho que costuma dar errado começa direto com microsserviços.">
+      <div class="scroll">
+        <svg viewBox="0 0 760 270" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+              <path d="M0 0L10 5L0 10z" class="d-head"/>
+            </marker>
+            <marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+              <path d="M0 0L10 5L0 10z" class="d-head-bad"/>
+            </marker>
+          </defs>
+
+          <!-- Caminho 1: monólito primeiro -->
+          <text x="20" y="24" class="d-label" data-lang="pt">CAMINHO QUE COSTUMA DAR CERTO</text>
+          <text x="20" y="24" class="d-label" data-lang="en">THE PATH THAT USUALLY WORKS</text>
+
+          <rect x="20" y="40" width="150" height="80" rx="10" class="d-acc"/>
+          <line x1="95" y1="48" x2="95" y2="112" class="d-sep"/>
+          <line x1="28" y1="80" x2="162" y2="80" class="d-sep"/>
+          <text x="95" y="140" text-anchor="middle" class="d-in" data-lang="pt">Monólito modular</text>
+          <text x="95" y="140" text-anchor="middle" class="d-in" data-lang="en">Modular monolith</text>
+
+          <line x1="180" y1="80" x2="268" y2="80" class="d-line" marker-end="url(#ah)"/>
+          <text x="224" y="58" text-anchor="middle" class="d-small" data-lang="pt"><tspan x="224">cresce</tspan><tspan x="224" dy="14">e aprende</tspan></text>
+          <text x="224" y="58" text-anchor="middle" class="d-small" data-lang="en"><tspan x="224">grows</tspan><tspan x="224" dy="14">and learns</tspan></text>
+
+          <rect x="278" y="40" width="190" height="80" rx="10" class="d-acc"/>
+          <rect x="290" y="52" width="76" height="26" rx="5" class="d-mod"/>
+          <rect x="380" y="52" width="76" height="26" rx="5" class="d-mod"/>
+          <rect x="290" y="84" width="76" height="26" rx="5" class="d-mod"/>
+          <rect x="380" y="84" width="76" height="26" rx="5" class="d-mod"/>
+          <text x="373" y="140" text-anchor="middle" class="d-in" data-lang="pt">Fronteiras conhecidas</text>
+          <text x="373" y="140" text-anchor="middle" class="d-in" data-lang="en">Known boundaries</text>
+
+          <line x1="478" y1="80" x2="566" y2="80" class="d-line" marker-end="url(#ah)"/>
+          <text x="522" y="58" text-anchor="middle" class="d-small" data-lang="pt"><tspan x="522">divide</tspan><tspan x="522" dy="14">se precisar</tspan></text>
+          <text x="522" y="58" text-anchor="middle" class="d-small" data-lang="en"><tspan x="522">split</tspan><tspan x="522" dy="14">if needed</tspan></text>
+
+          <rect x="576" y="40" width="44" height="34" rx="6" class="d-accfill"/>
+          <rect x="628" y="40" width="44" height="34" rx="6" class="d-accfill" opacity=".75"/>
+          <rect x="680" y="40" width="44" height="34" rx="6" class="d-accfill" opacity=".55"/>
+          <rect x="576" y="86" width="44" height="34" rx="6" class="d-accfill" opacity=".65"/>
+          <rect x="628" y="86" width="44" height="34" rx="6" class="d-accfill" opacity=".45"/>
+          <text x="650" y="140" text-anchor="middle" class="d-in" data-lang="pt">Microsserviços</text>
+          <text x="650" y="140" text-anchor="middle" class="d-in" data-lang="en">Microservices</text>
+
+          <!-- Caminho 2: microsserviços desde o início -->
+          <text x="20" y="184" class="d-label" data-lang="pt">CAMINHO QUE COSTUMA DAR ERRADO</text>
+          <text x="20" y="184" class="d-label" data-lang="en">THE PATH THAT USUALLY FAILS</text>
+
+          <rect x="20" y="200" width="36" height="28" rx="5" class="d-mod"/>
+          <rect x="64" y="200" width="36" height="28" rx="5" class="d-mod"/>
+          <rect x="108" y="200" width="36" height="28" rx="5" class="d-mod"/>
+          <rect x="42" y="234" width="36" height="28" rx="5" class="d-mod"/>
+          <rect x="86" y="234" width="36" height="28" rx="5" class="d-mod"/>
+          <text x="160" y="236" class="d-in" data-lang="pt">Microsserviços desde o dia 1</text>
+          <text x="160" y="236" class="d-in" data-lang="en">Microservices from day 1</text>
+
+          <line x1="400" y1="231" x2="560" y2="231" class="d-dash" marker-end="url(#ahb)"/>
+          <text x="480" y="221" text-anchor="middle" class="d-small" data-lang="pt">fronteiras chutadas</text>
+          <text x="480" y="221" text-anchor="middle" class="d-small" data-lang="en">guessed boundaries</text>
+
+          <path d="M590 248 L606 216 L622 248 Z" class="d-warn"/>
+          <line x1="606" y1="227" x2="606" y2="238" class="d-badline"/>
+          <text x="634" y="236" class="d-in d-bad" data-lang="pt">Sérios problemas</text>
+          <text x="634" y="236" class="d-in d-bad" data-lang="en">Serious trouble</text>
+        </svg>
+      </div>
+      <figcaption>
+        <span data-lang="pt">Figura da equipe, inspirada na ilustração do post: o padrão observado por Fowler nas histórias de microsserviços.</span>
+        <span data-lang="en">Team-made figure inspired by the post's illustration: the pattern Fowler observed in microservice stories.</span>
+      </figcaption>
+    </figure>
+
+    <h3><span data-lang="pt">Os dois motivos principais</span><span data-lang="en">The two main reasons</span></h3>
+    <div class="points">
+      <div class="point">
+        <h3>YAGNI</h3>
+        <p data-lang="pt">"Você não vai precisar disso". No começo nem se sabe se o software será útil aos usuários. O melhor é lançar uma versão simples rápido e ganhar feedback; o custo dos microsserviços só atrasaria esse ciclo.</p>
+        <p data-lang="en">"You aren't gonna need it." At the start you don't even know if the software will be useful. It's better to ship a simple version fast and get feedback; the microservice premium would only slow that cycle.</p>
+      </div>
+      <div class="point">
+        <h3><span data-lang="pt">Fronteiras certas</span><span data-lang="en">Right boundaries</span></h3>
+        <p data-lang="pt">Microsserviços só funcionam com fronteiras estáveis entre os serviços, e acertá-las logo de início é difícil até para arquitetos experientes. Mover funcionalidade entre serviços é muito mais trabalhoso que dentro de um monólito.</p>
+        <p data-lang="en">Microservices only work with stable boundaries between services, and getting them right up front is hard even for experienced architects. Moving functionality between services is far harder than inside a monolith.</p>
+      </div>
+    </div>
+
+    <h3><span data-lang="pt">Formas de aplicar a estratégia, segundo o post</span><span data-lang="en">Ways to apply the strategy, according to the post</span></h3>
+    <ul class="chips">
+      <li><span data-lang="pt"><strong>Monólito modular:</strong> projetar com cuidado as fronteiras internas (APIs e dados) para facilitar a divisão futura.</span><span data-lang="en"><strong>Modular monolith:</strong> carefully design internal boundaries (APIs and data) to ease a future split.</span></li>
+      <li><span data-lang="pt"><strong>Descascar pelas bordas:</strong> extrair serviços nas extremidades e deixar o núcleo do monólito mais quieto.</span><span data-lang="en"><strong>Peel off at the edges:</strong> extract services at the edges and leave the monolith core quieter.</span></li>
+      <li><span data-lang="pt"><strong>Arquitetura de sacrifício:</strong> construir um monólito sabendo que ele será descartado, se isso acelerar a chegada ao mercado.</span><span data-lang="en"><strong>Sacrificial architecture:</strong> build a monolith knowing it will be thrown away, if that speeds up time to market.</span></li>
+      <li><span data-lang="pt"><strong>Poucos serviços grandes:</strong> começar com dois ou três serviços "grossos" e refinar quando as fronteiras estabilizarem.</span><span data-lang="en"><strong>A few coarse services:</strong> start with two or three coarse-grained services and refine once boundaries settle.</span></li>
+    </ul>
+
+    <p data-lang="pt">O próprio Fowler reconhece que a questão não é unânime: há quem defenda começar com microsserviços para acostumar o time a esse ritmo, sobretudo ao substituir um sistema já conhecido. A posição dele é que só vale a pena começar assim se a equipe já tiver experiência real com microsserviços, e que qualquer conselho sobre o tema ainda deve ser visto como provisório.</p>
+    <p data-lang="en">Fowler admits the question isn't unanimous: some argue for starting with microservices to get the team used to that rhythm, especially when replacing a well-known system. His position is that starting this way is only worthwhile if the team already has real microservices experience, and that any advice on the topic should still be seen as tentative.</p>
+  </section>
+
+  <!-- 2. VANTAGENS E DESVANTAGENS -->
+  <section class="block" id="pros">
+    <h2><span class="num">02</span><span data-lang="pt">Vantagens e desvantagens</span><span data-lang="en">Pros and cons</span></h2>
+    <div class="pc">
+      <div class="pc-col pro">
+        <h3><span class="badge">+</span><span data-lang="pt">Vantagens</span><span data-lang="en">Advantages</span></h3>
+        <ul class="list">
+          <li><span data-lang="pt">Entrega a primeira versão mais rápido e encurta o ciclo de feedback.</span><span data-lang="en">Ships the first version faster and shortens the feedback cycle.</span></li>
+          <li><span data-lang="pt">Evita pagar o custo de operar vários serviços quando o sistema ainda é simples.</span><span data-lang="en">Avoids paying the cost of operating many services while the system is still simple.</span></li>
+          <li><span data-lang="pt">Refatorar e mover funcionalidades é muito mais fácil dentro de um único código.</span><span data-lang="en">Refactoring and moving features is much easier within a single codebase.</span></li>
+          <li><span data-lang="pt">Dá tempo para descobrir as fronteiras certas antes de "congelá-las" em serviços.</span><span data-lang="en">Gives time to discover the right boundaries before "freezing" them into services.</span></li>
+          <li><span data-lang="pt">Dá tempo para preparar os pré-requisitos (deploy automatizado, monitoramento).</span><span data-lang="en">Gives time to prepare the prerequisites (automated deployment, monitoring).</span></li>
+        </ul>
+      </div>
+      <div class="pc-col con">
+        <h3><span class="badge">−</span><span data-lang="pt">Desvantagens</span><span data-lang="en">Disadvantages</span></h3>
+        <ul class="list">
+          <li><span data-lang="pt">Exige muita disciplina para manter o monólito modular; sem isso, ele não se deixa dividir depois.</span><span data-lang="en">Takes a lot of discipline to keep the monolith modular; without it, it won't split later.</span></li>
+          <li><span data-lang="pt">Tentativas de quebrar um monólito emaranhado costumam virar bagunça.</span><span data-lang="en">Attempts to break a tangled monolith often end in a mess.</span></li>
+          <li><span data-lang="pt">A migração futura para serviços é um trabalho adicional que precisa ser planejado.</span><span data-lang="en">The later migration to services is extra work that must be planned.</span></li>
+          <li><span data-lang="pt">O time não se acostuma desde cedo a trabalhar em equipes pequenas e separadas por serviço.</span><span data-lang="en">The team doesn't get used early on to working in small teams split by service.</span></li>
+          <li><span data-lang="pt">Ainda há poucas evidências; o próprio autor trata o conselho como provisório.</span><span data-lang="en">Evidence is still thin; the author himself treats the advice as tentative.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. IMPACTO NA GESTÃO -->
+  <section class="block" id="gestao">
+    <h2><span class="num">03</span><span data-lang="pt">Impacto na gestão do projeto</span><span data-lang="en">Impact on project management</span></h2>
+    <div class="impact">
+      <article class="imp">
+        <header>
+          <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          <div><span class="tag"><span data-lang="pt">Prazo</span><span data-lang="en">Schedule</span></span><h3><span data-lang="pt">MVP mais cedo</span><span data-lang="en">Earlier MVP</span></h3></div>
+        </header>
+        <p data-lang="pt">Sem montar a infraestrutura de vários serviços, a equipe chega antes à primeira entrega e valida a ideia com usuários. No cronograma, a eventual divisão em serviços vira uma fase futura, planejada só quando houver sinais claros de necessidade.</p>
+        <p data-lang="en">Without building the infrastructure for many services, the team reaches the first delivery sooner and validates the idea with users. In the schedule, a possible split into services becomes a later phase, planned only when there are clear signs it's needed.</p>
+      </article>
+      <article class="imp">
+        <header>
+          <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg></span>
+          <div><span class="tag"><span data-lang="pt">Custo</span><span data-lang="en">Cost</span></span><h3><span data-lang="pt">Gastar quando fizer sentido</span><span data-lang="en">Spend when it makes sense</span></h3></div>
+        </header>
+        <p data-lang="pt">O custo extra dos microsserviços (deploy, monitoramento, comunicação entre serviços) é adiado para quando o sistema realmente precisar. Se a ideia não der certo, perde-se menos dinheiro. Em contrapartida, a migração posterior precisa entrar no orçamento.</p>
+        <p data-lang="en">The microservice premium (deployment, monitoring, inter-service communication) is postponed until the system truly needs it. If the idea fails, less money is lost. In return, the later migration must be budgeted.</p>
+      </article>
+      <article class="imp">
+        <header>
+          <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.2c3 .2 5.5 2.6 5.5 5.8"/></svg></span>
+          <div><span class="tag"><span data-lang="pt">Equipe</span><span data-lang="en">Team</span></span><h3><span data-lang="pt">Começar enxuto</span><span data-lang="en">Start lean</span></h3></div>
+        </header>
+        <p data-lang="pt">Uma equipe pequena consegue tocar um monólito sem precisar de especialistas em infraestrutura distribuída. O gestor deve, porém, garantir disciplina de modularidade (revisões de código, padrões internos) e só dividir em times por serviço quando a escala exigir.</p>
+        <p data-lang="en">A small team can run a monolith without distributed-infrastructure specialists. The manager must, however, enforce modularity discipline (code reviews, internal standards) and only split into service teams when scale demands it.</p>
+      </article>
+      <article class="imp">
+        <header>
+          <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v4"/><path d="M12 17.5v.01"/></svg></span>
+          <div><span class="tag"><span data-lang="pt">Riscos</span><span data-lang="en">Risks</span></span><h3><span data-lang="pt">Trocar um risco por outro</span><span data-lang="en">Trading one risk for another</span></h3></div>
+        </header>
+        <p data-lang="pt">Reduz o risco de definir fronteiras erradas e de construir algo complexo que ninguém usa. Surge outro risco: o monólito virar um bloco acoplado impossível de dividir. Mitigação: incluir no plano de riscos a manutenção da modularidade e pontos de revisão da arquitetura.</p>
+        <p data-lang="en">Lowers the risk of drawing wrong boundaries and of building something complex nobody uses. Another risk appears: the monolith becoming a coupled block impossible to split. Mitigation: add modularity upkeep and architecture review checkpoints to the risk plan.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- 4. POST ORIGINAL -->
+  <section class="block" id="original">
+    <h2><span class="num">04</span><span data-lang="pt">Post original</span><span data-lang="en">Original post</span></h2>
+    <div class="source">
+      <div>
+        <span class="k">martinfowler.com · bliki</span>
+        <h3>Monolith First</h3>
+        <p class="url">https://martinfowler.com/bliki/MonolithFirst.html</p>
+      </div>
+      <a class="btn" href="https://martinfowler.com/bliki/MonolithFirst.html" target="_blank" rel="noopener"><span data-lang="pt">Ler o original</span><span data-lang="en">Read the original</span> ↗</a>
+    </div>
+  </section>
+
+  <nav class="pager" aria-label="Navegação entre páginas">
+    <a class="next" href="legacy-displacement.html">
+      <span class="dir"><span data-lang="pt">Próximo · Eixo 2</span><span data-lang="en">Next · Axis 2</span></span>
+      <span class="t"><span data-lang="pt">Substituição de Legado</span><span data-lang="en">Legacy Displacement</span> →</span>
+    </a>
+  </nav>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <p><span data-lang="pt">Atividade "Guia Web de Arquitetura de Software" · UC Gestão de Projetos · Faculdade de Tecnologia SENAI Félix Guisard · 2026</span><span data-lang="en">"Software Architecture Web Guide" assignment · Project Management course · SENAI Félix Guisard College of Technology · 2026</span></p>
+    <p><span data-lang="pt">Resumo escrito pela equipe com apoio de IA e conferido com o texto original.</span><span data-lang="en">Summary written by the team with AI assistance and checked against the original text.</span></p>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>

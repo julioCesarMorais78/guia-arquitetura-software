@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="pt-BR" data-ui="pt"
+      data-title-pt="Camadas: Apresentação, Domínio e Dados · Guia de Arquitetura"
+      data-title-en="Presentation Domain Data Layering · Architecture Guide">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Camadas: Apresentação, Domínio e Dados · Guia de Arquitetura</title>
+  <meta name="description" content="Presentation Domain Data Layering: separar apresentação, domínio e dados. Resumo, vantagens, desvantagens e impacto na gestão do projeto.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="ax3">
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="index.html">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+        <rect x="2" y="2" width="22" height="6" rx="1.5" fill="#c2410c"/>
+        <rect x="2" y="10" width="22" height="6" rx="1.5" fill="#0e7490"/>
+        <rect x="2" y="18" width="22" height="6" rx="1.5" fill="#6d28d9"/>
+      </svg>
+      <span><span data-lang="pt">Guia de Arquitetura</span><span data-lang="en">Architecture Guide</span> <b>/ GP</b></span>
+    </a>
+    <nav class="nav" aria-label="Páginas" data-aria-pt="Páginas" data-aria-en="Pages">
+      <a href="index.html"><span data-lang="pt">Início</span><span data-lang="en">Home</span></a>
+      <a href="monolith-first.html"><span data-lang="pt">Monólito Primeiro</span><span data-lang="en">Monolith First</span></a>
+      <a href="legacy-displacement.html"><span data-lang="pt">Substituição de Legado</span><span data-lang="en">Legacy Displacement</span></a>
+      <a href="layering.html" aria-current="page"><span data-lang="pt">Camadas</span><span data-lang="en">Layering</span></a>
+    </nav>
+    <div class="lang" role="group" aria-label="Idioma / Language">
+      <button type="button" data-set-lang="pt" aria-pressed="true">PT</button>
+      <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="post-hero">
+    <a class="back" href="index.html"><span data-lang="pt">← Voltar ao início</span><span data-lang="en">← Back to home</span></a>
+    <br>
+    <span class="axis-tag"><span data-lang="pt">Eixo 3 · Camadas e execução</span><span data-lang="en">Axis 3 · Layers &amp; execution</span></span>
+    <h1><span data-lang="pt">Camadas: Apresentação, Domínio e Dados</span><span data-lang="en">Presentation Domain Data Layering</span></h1>
+    <p class="orig-title"><span data-lang="pt">Título original: </span><span data-lang="en">Original title: </span><em>Presentation Domain Data Layering</em></p>
+    <p class="lead">
+      <span data-lang="pt">Dividir um programa em apresentação, regras de negócio e acesso a dados é uma forma eficaz de organizá-lo, desde que a divisão seja usada na escala certa e não vire critério para separar equipes.</span>
+      <span data-lang="en">Splitting a program into presentation, business rules and data access is an effective way to organize it, as long as the split is used at the right scale and doesn't become the criterion for splitting teams.</span>
+    </p>
+    <dl class="meta">
+      <div><dt><span data-lang="pt">Autor</span><span data-lang="en">Author</span></dt><dd>Martin Fowler</dd></div>
+      <div><dt><span data-lang="pt">Publicado</span><span data-lang="en">Published</span></dt><dd><span data-lang="pt">26 ago. 2015</span><span data-lang="en">26 Aug 2015</span></dd></div>
+      <div><dt><span data-lang="pt">Formato</span><span data-lang="en">Format</span></dt><dd><span data-lang="pt">Post curto (bliki)</span><span data-lang="en">Short post (bliki)</span></dd></div>
+    </dl>
+  </section>
+
+  <nav class="toc" aria-label="Nesta página">
+    <a href="#resumo"><span data-lang="pt">1 · Resumo</span><span data-lang="en">1 · Summary</span></a>
+    <a href="#pros"><span data-lang="pt">2 · Vantagens e desvantagens</span><span data-lang="en">2 · Pros and cons</span></a>
+    <a href="#gestao"><span data-lang="pt">3 · Impacto na gestão</span><span data-lang="en">3 · Management impact</span></a>
+    <a href="#original"><span data-lang="pt">4 · Post original</span><span data-lang="en">4 · Original post</span></a>
+  </nav>
+
+  <!-- 1. RESUMO -->
+  <section class="block" id="resumo">
+    <h2><span class="num">01</span><span data-lang="pt">Resumo da ideia central</span><span data-lang="en">Summary of the central idea</span></h2>
+
+    <p data-lang="pt">Uma das formas mais comuns de modularizar um sistema rico em informação é separá-lo em três camadas. Numa aplicação web, por exemplo: uma camada cuida das requisições HTTP e de montar o HTML, outra concentra validações e cálculos do negócio, e a última resolve como guardar e buscar dados, seja num banco de dados ou em serviços remotos.</p>
+    <p data-lang="en">One of the most common ways to modularize an information-rich system is to split it into three layers. In a web application, for example: one layer handles HTTP requests and renders HTML, another holds business validations and calculations, and the last one sorts out how to store and fetch data, whether in a database or remote services.</p>
+
+    <figure class="diagram" role="img" aria-label="Diagrama: à esquerda, as três camadas empilhadas com dependências de cima para baixo; à direita, um sistema maior dividido primeiro em módulos de domínio, cada um com suas próprias camadas.">
+      <div class="scroll">
+        <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="ah3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0L10 5L0 10z" class="d-head"/>
+            </marker>
+          </defs>
+
+          <!-- Esquerda: as três camadas -->
+          <text x="20" y="22" class="d-label" data-lang="pt">SISTEMA PEQUENO · 3 CAMADAS</text>
+          <text x="20" y="22" class="d-label" data-lang="en">SMALL SYSTEM · 3 LAYERS</text>
+
+          <rect x="20" y="40" width="300" height="62" rx="9" class="d-accfill"/>
+          <text x="38" y="66" class="d-in" style="fill:var(--surface)" data-lang="pt">Apresentação (UI)</text>
+          <text x="38" y="66" class="d-in" style="fill:var(--surface)" data-lang="en">Presentation (UI)</text>
+          <text x="38" y="88" class="d-small" style="fill:var(--surface);opacity:.85" data-lang="pt">telas, HTTP, HTML</text>
+          <text x="38" y="88" class="d-small" style="fill:var(--surface);opacity:.85" data-lang="en">screens, HTTP, HTML</text>
+
+          <line x1="170" y1="104" x2="170" y2="124" class="d-line" marker-end="url(#ah3)"/>
+
+          <rect x="20" y="128" width="300" height="62" rx="9" class="d-acc"/>
+          <text x="38" y="154" class="d-in" data-lang="pt">Domínio (negócio)</text>
+          <text x="38" y="154" class="d-in" data-lang="en">Domain (business)</text>
+          <text x="38" y="176" class="d-small" data-lang="pt">validações, cálculos, regras</text>
+          <text x="38" y="176" class="d-small" data-lang="en">validations, calculations, rules</text>
+
+          <line x1="170" y1="192" x2="170" y2="212" class="d-line" marker-end="url(#ah3)"/>
+
+          <rect x="20" y="216" width="300" height="62" rx="9" class="d-box"/>
+          <text x="38" y="242" class="d-in" data-lang="pt">Dados (acesso)</text>
+          <text x="38" y="242" class="d-in" data-lang="en">Data (access)</text>
+          <text x="38" y="264" class="d-small" data-lang="pt">banco de dados, serviços remotos</text>
+          <text x="38" y="264" class="d-small" data-lang="en">database, remote services</text>
+
+          <text x="330" y="160" class="d-small" data-lang="pt" transform="rotate(90 330 160)" text-anchor="middle">depende de ↓</text>
+          <text x="330" y="160" class="d-small" data-lang="en" transform="rotate(90 330 160)" text-anchor="middle">depends on ↓</text>
+
+          <line x1="370" y1="30" x2="370" y2="290" class="d-sep"/>
+
+          <!-- Direita: sistema grande, módulos de domínio -->
+          <text x="400" y="22" class="d-label" data-lang="pt">SISTEMA GRANDE · MÓDULOS DE DOMÍNIO</text>
+          <text x="400" y="22" class="d-label" data-lang="en">LARGE SYSTEM · DOMAIN MODULES</text>
+
+          <g>
+            <rect x="400" y="40" width="104" height="238" rx="10" class="d-box"/>
+            <text x="452" y="66" text-anchor="middle" class="d-in" data-lang="pt">Estoque</text>
+            <text x="452" y="66" text-anchor="middle" class="d-in" data-lang="en">Inventory</text>
+            <rect x="412" y="82" width="80" height="52" rx="6" class="d-accfill"/>
+            <rect x="412" y="142" width="80" height="52" rx="6" class="d-acc"/>
+            <rect x="412" y="202" width="80" height="52" rx="6" class="d-mod"/>
+          </g>
+          <g>
+            <rect x="518" y="40" width="104" height="238" rx="10" class="d-box"/>
+            <text x="570" y="66" text-anchor="middle" class="d-in" data-lang="pt">Vendas</text>
+            <text x="570" y="66" text-anchor="middle" class="d-in" data-lang="en">Sales</text>
+            <rect x="530" y="82" width="80" height="52" rx="6" class="d-accfill"/>
+            <rect x="530" y="142" width="80" height="52" rx="6" class="d-acc"/>
+            <rect x="530" y="202" width="80" height="52" rx="6" class="d-mod"/>
+          </g>
+          <g>
+            <rect x="636" y="40" width="104" height="238" rx="10" class="d-box"/>
+            <text x="688" y="66" text-anchor="middle" class="d-in" data-lang="pt">Compras</text>
+            <text x="688" y="66" text-anchor="middle" class="d-in" data-lang="en">Purchasing</text>
+            <rect x="648" y="82" width="80" height="52" rx="6" class="d-accfill"/>
+            <rect x="648" y="142" width="80" height="52" rx="6" class="d-acc"/>
+            <rect x="648" y="202" width="80" height="52" rx="6" class="d-mod"/>
+          </g>
+        </svg>
+      </div>
+      <figcaption>
+        <span data-lang="pt">Figuras. Esquerda: as três camadas e o sentido das dependências. Direita: quando o sistema cresce, o post recomenda dividir primeiro por áreas do negócio (aqui, um exemplo nosso de uma panificadora), e cada módulo mantém suas camadas por dentro.</span>
+        <span data-lang="en">Team-made figure. Left: the three layers and the direction of dependencies. Right: as the system grows, the post recommends splitting first by business area (here, our own bakery example), with each module keeping its layers inside.</span>
+      </figcaption>
+    </figure>
+
+    <h3><span data-lang="pt">Os três motivos para separar em camadas</span><span data-lang="en">The three reasons to layer</span></h3>
+    <div class="points">
+      <div class="point">
+        <h3><span data-lang="pt">Foco reduzido</span><span data-lang="en">Narrower focus</span></h3>
+        <p data-lang="pt">O principal benefício para Fowler: pensar em cada assunto quase isoladamente. Ao mexer nas regras, os dados "simplesmente chegam" por funções; ao mexer na tela, a lógica fica abstraída. Para ele, só esse motivo já justifica a divisão.</p>
+        <p data-lang="en">Fowler's main benefit: think about each topic almost in isolation. When working on rules, data "just arrives" through functions; when working on the screen, the logic is abstracted away. For him this reason alone justifies the split.</p>
+      </div>
+      <div class="point">
+        <h3><span data-lang="pt">Substituição</span><span data-lang="en">Substitution</span></h3>
+        <p data-lang="pt">A mesma lógica de negócio pode servir várias apresentações (site, app, API, linha de comando). Em tese, também facilita trocar o banco de dados, embora o autor diga que raramente vê alguém fazer isso de fato.</p>
+        <p data-lang="en">The same business logic can serve several presentations (website, app, API, command line). In theory it also eases swapping the database, though the author says he rarely sees anyone actually do it.</p>
+      </div>
+      <div class="point">
+        <h3><span data-lang="pt">Testabilidade</span><span data-lang="en">Testability</span></h3>
+        <p data-lang="pt">As fronteiras entre camadas criam pontos naturais para testes. Concentrar a lógica no domínio permite testá-la sem passar pela interface, e o acesso a dados pode ser trocado por dublês de teste.</p>
+        <p data-lang="en">Layer boundaries create natural seams for testing. Keeping logic in the domain lets you test it without going through the UI, and data access can be replaced by test doubles.</p>
+      </div>
+      <div class="point">
+        <h3><span data-lang="pt">Camadas lógicas, não físicas</span><span data-lang="en">Logical, not physical, layers</span></h3>
+        <p data-lang="pt">As três camadas podem rodar no mesmo computador ou em máquinas diferentes. Também não há ordem fixa para programá-las: é normal ir e voltar entre elas conforme a interface é refinada.</p>
+        <p data-lang="en">The three layers can run on one computer or on different machines. Nor is there a fixed order to build them: it's normal to iterate between them as the interface is refined.</p>
+      </div>
+    </div>
+
+    <h3><span data-lang="pt">Dois alertas do post</span><span data-lang="en">Two warnings from the post</span></h3>
+    <div class="callouts">
+      <div class="callout">
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
+        <p data-lang="pt"><strong>Use em pequena escala.</strong> Em sistemas grandes, cada camada fica complexa demais sozinha. O nível mais alto deve ser formado por módulos de domínio, e cada um é dividido em camadas por dentro.</p>
+        <p data-lang="en"><strong>Use it at small scale.</strong> In large systems each layer gets too complex on its own. The top level should be made of domain modules, each layered internally.</p>
+      </div>
+      <div class="callout">
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.2c3 .2 5.5 2.6 5.5 5.8"/></svg></span>
+        <p data-lang="pt"><strong>Não separe times por camada.</strong> Um time de front-end, outro de back-end e outro de banco cria atrito e afasta os desenvolvedores dos usuários. Os desenvolvedores não precisam ser full stack, mas as equipes sim.</p>
+        <p data-lang="en"><strong>Don't split teams by layer.</strong> A front-end team, a back-end team and a database team create friction and distance developers from users. Developers needn't be full-stack, but teams should be.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. VANTAGENS E DESVANTAGENS -->
+  <section class="block" id="pros">
+    <h2><span class="num">02</span><span data-lang="pt">Vantagens e desvantagens</span><span data-lang="en">Pros and cons</span></h2>
+    <div class="pc">
+      <div class="pc-col pro">
+        <h3><span class="badge">+</span><span data-lang="pt">Vantagens</span><span data-lang="en">Advantages</span></h3>
+        <ul class="list">
+          <li><span data-lang="pt">Código mais fácil de entender, porque cada parte trata de um assunto só.</span><span data-lang="en">Code is easier to understand because each part deals with one topic.</span></li>
+          <li><span data-lang="pt">Reaproveita as regras de negócio em várias interfaces sem duplicar código.</span><span data-lang="en">Reuses business rules across several interfaces without duplicating code.</span></li>
+          <li><span data-lang="pt">Testes automatizados mais simples e rápidos na camada de domínio.</span><span data-lang="en">Simpler, faster automated tests in the domain layer.</span></li>
+          <li><span data-lang="pt">Mudanças na tela ou no banco tendem a não quebrar as regras de negócio.</span><span data-lang="en">Changes to the screen or database tend not to break business rules.</span></li>
+          <li><span data-lang="pt">Padrão amplamente conhecido e apoiado por frameworks, fácil de ensinar.</span><span data-lang="en">Widely known pattern supported by frameworks, easy to teach.</span></li>
+        </ul>
+      </div>
+      <div class="pc-col con">
+        <h3><span class="badge">−</span><span data-lang="pt">Desvantagens</span><span data-lang="en">Disadvantages</span></h3>
+        <ul class="list">
+          <li><span data-lang="pt">Em sistemas grandes, usar as camadas como divisão principal deixa cada uma inchada.</span><span data-lang="en">In large systems, using layers as the main split leaves each one bloated.</span></li>
+          <li><span data-lang="pt">Uma funcionalidade nova costuma exigir mexer nas três camadas ao mesmo tempo.</span><span data-lang="en">A new feature often requires touching all three layers at once.</span></li>
+          <li><span data-lang="pt">A troca de banco de dados, muito citada como benefício, quase nunca acontece na prática.</span><span data-lang="en">Swapping the database, often cited as a benefit, rarely happens in practice.</span></li>
+          <li><span data-lang="pt">Leva facilmente ao erro de organizar times por camada.</span><span data-lang="en">Easily leads to the mistake of organizing teams by layer.</span></li>
+          <li><span data-lang="pt">Para programas muito simples, a separação pode parecer burocracia extra.</span><span data-lang="en">For very simple programs, the split can feel like extra bureaucracy.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. IMPACTO NA GESTÃO -->
+  <section class="block" id="gestao">
+    <h2><span class="num">03</span><span data-lang="pt">Impacto na gestão do projeto</span><span data-lang="en">Impact on project management</span></h2>
+    <div class="impact">
+      <article class="imp">
+        <header>
+          <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          <div><span class="tag"><span data-lang="pt">Prazo</span><span data-lang="en">Schedule</span></span><h3><span data-lang="pt">Mudanças mais previsíveis</span><span data-lang="en">More predictable changes</span></h3></div>
+        </header>
+        <p data-lang="pt">Como cada alteração tende a ficar restrita a uma camada, fica mais fácil estimar o esforço. Mas o planejamento deve tratar cada funcionalidade como uma fatia vertical (tela + regra + dados), e não como três tarefas sequenciais, já que é normal iterar entre as camadas.</p>
+        <p data-lang="en">Since each change tends to stay within one layer, effort is easier to estimate. But planning should treat each feature as a vertical slice (screen + rule + data), not three sequential tasks, since iterating between layers is normal.</p>
+      </article>
+      <article class="imp">
+        <header>
+          <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg></span>
+          <div><span class="tag"><span data-lang="pt">Custo</span><span data-lang="en">Cost</span></span><h3><span data-lang="pt">Manutenção mais barata</span><span data-lang="en">Cheaper maintenance</span></h3></div>
+        </header>
+        <p data-lang="pt">Testar o domínio sem a interface reduz o custo de garantir qualidade, e reaproveitar as regras em várias telas ou apps evita pagar duas vezes pelo mesmo código. O investimento inicial de estruturar as camadas é pequeno perto da economia ao longo da vida do sistema.</p>
+        <p data-lang="en">Testing the domain without the UI lowers the cost of quality, and reusing rules across screens or apps avoids paying twice for the same code. The initial investment in structuring layers is small compared to the savings over the system's life.</p>
+      </article>
+      <article class="imp">
+        <header>
+          <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.2c3 .2 5.5 2.6 5.5 5.8"/></svg></span>
+          <div><span class="tag"><span data-lang="pt">Equipe</span><span data-lang="en">Team</span></span><h3><span data-lang="pt">Times completos, não silos</span><span data-lang="en">Full-stack teams, not silos</span></h3></div>
+        </header>
+        <p data-lang="pt">Esta é a lição mais direta para o gestor: montar equipes com todas as competências (front-end, back-end e dados) em vez de um time por camada. Isso reduz filas e repasses entre times e mantém todos próximos do usuário. As camadas dividem o código; não precisam dividir as pessoas.</p>
+        <p data-lang="en">This is the most direct lesson for managers: build teams with all skills (front-end, back-end and data) rather than one team per layer. It reduces queues and hand-offs between teams and keeps everyone close to the user. Layers divide code; they needn't divide people.</p>
+      </article>
+      <article class="imp">
+        <header>
+          <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v4"/><path d="M12 17.5v.01"/></svg></span>
+          <div><span class="tag"><span data-lang="pt">Riscos</span><span data-lang="en">Risks</span></span><h3><span data-lang="pt">Menos efeito dominó</span><span data-lang="en">Less domino effect</span></h3></div>
+        </header>
+        <p data-lang="pt">Separar responsabilidades diminui o risco de uma mudança na interface quebrar regras de negócio, e os testes no domínio pegam erros mais cedo. Os riscos a vigiar são usar camadas como divisão principal num sistema que cresceu e criar barreiras entre times especializados.</p>
+        <p data-lang="en">Separating responsibilities lowers the risk of a UI change breaking business rules, and domain tests catch errors earlier. Risks to watch are using layers as the main split in a system that has grown and creating barriers between specialized teams.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- 4. POST ORIGINAL -->
+  <section class="block" id="original">
+    <h2><span class="num">04</span><span data-lang="pt">Post original</span><span data-lang="en">Original post</span></h2>
+    <div class="source">
+      <div>
+        <span class="k">martinfowler.com · bliki</span>
+        <h3>Presentation Domain Data Layering</h3>
+        <p class="url">https://martinfowler.com/bliki/PresentationDomainDataLayering.html</p>
+      </div>
+      <a class="btn" href="https://martinfowler.com/bliki/PresentationDomainDataLayering.html" target="_blank" rel="noopener"><span data-lang="pt">Ler o original</span><span data-lang="en">Read the original</span> ↗</a>
+    </div>
+  </section>
+
+  <nav class="pager" aria-label="Navegação entre páginas">
+    <a href="legacy-displacement.html">
+      <span class="dir"><span data-lang="pt">Anterior · Eixo 2</span><span data-lang="en">Previous · Axis 2</span></span>
+      <span class="t">← <span data-lang="pt">Substituição de Legado</span><span data-lang="en">Legacy Displacement</span></span>
+    </a>
+    <a class="next" href="index.html">
+      <span class="dir"><span data-lang="pt">Fim do guia</span><span data-lang="en">End of the guide</span></span>
+      <span class="t"><span data-lang="pt">Voltar ao início →</span><span data-lang="en">Back to home →</span></span>
+    </a>
+  </nav>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <p><span data-lang="pt">Atividade "Guia Web de Arquitetura de Software" · UC Gestão de Projetos · Faculdade de Tecnologia SENAI Félix Guisard · 2026</span><span data-lang="en">"Software Architecture Web Guide" assignment · Project Management course · SENAI Félix Guisard College of Technology · 2026</span></p>
+    <p><span data-lang="pt">Resumo escrito pela equipe com apoio de IA e conferido com o texto original.</span><span data-lang="en">Summary written by the team with AI assistance and checked against the original text.</span></p>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>

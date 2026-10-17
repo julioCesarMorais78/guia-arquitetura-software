@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="pt-BR" data-ui="pt"
+      data-title-pt="Substituição de Legado · Guia de Arquitetura"
+      data-title-en="Patterns of Legacy Displacement · Architecture Guide">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Substituição de Legado · Guia de Arquitetura</title>
+  <meta name="description" content="Patterns of Legacy Displacement: substituir sistemas legados de forma gradual e segura. Resumo, vantagens, desvantagens e impacto na gestão do projeto.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="ax2">
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="index.html">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+        <rect x="2" y="2" width="22" height="6" rx="1.5" fill="#c2410c"/>
+        <rect x="2" y="10" width="22" height="6" rx="1.5" fill="#0e7490"/>
+        <rect x="2" y="18" width="22" height="6" rx="1.5" fill="#6d28d9"/>
+      </svg>
+      <span><span data-lang="pt">Guia de Arquitetura</span><span data-lang="en">Architecture Guide</span> <b>/ GP</b></span>
+    </a>
+    <nav class="nav" aria-label="Páginas" data-aria-pt="Páginas" data-aria-en="Pages">
+      <a href="index.html"><span data-lang="pt">Início</span><span data-lang="en">Home</span></a>
+      <a href="monolith-first.html"><span data-lang="pt">Monólito Primeiro</span><span data-lang="en">Monolith First</span></a>
+      <a href="legacy-displacement.html" aria-current="page"><span data-lang="pt">Substituição de Legado</span><span data-lang="en">Legacy Displacement</span></a>
+      <a href="layering.html"><span data-lang="pt">Camadas</span><span data-lang="en">Layering</span></a>
+    </nav>
+    <div class="lang" role="group" aria-label="Idioma / Language">
+      <button type="button" data-set-lang="pt" aria-pressed="true">PT</button>
+      <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="post-hero">
+    <a class="back" href="index.html"><span data-lang="pt">← Voltar ao início</span><span data-lang="en">← Back to home</span></a>
+    <br>
+    <span class="axis-tag"><span data-lang="pt">Eixo 2 · Fronteiras e evolução</span><span data-lang="en">Axis 2 · Boundaries &amp; evolution</span></span>
+    <h1><span data-lang="pt">Padrões de Substituição de Legado</span><span data-lang="en">Patterns of Legacy Displacement</span></h1>
+    <p class="orig-title"><span data-lang="pt">Título original: </span><span data-lang="en">Original title: </span><em>Patterns of Legacy Displacement</em></p>
+    <p class="lead">
+      <span data-lang="pt">Como modernizar sistemas antigos sem cair no ciclo de reescritas que nunca terminam: entender o objetivo, dividir o problema, entregar em partes e mudar a organização junto com a tecnologia.</span>
+      <span data-lang="en">How to modernize old systems without falling into the cycle of never-ending rewrites: understand the goal, break up the problem, deliver in parts and change the organization alongside the technology.</span>
+    </p>
+    <dl class="meta">
+      <div><dt><span data-lang="pt">Autores</span><span data-lang="en">Authors</span></dt><dd>Ian Cartwright, Rob Horn, James Lewis</dd></div>
+      <div><dt><span data-lang="pt">Publicado</span><span data-lang="en">Published</span></dt><dd><span data-lang="pt">jul. 2021 · atualizado em mar. 2024</span><span data-lang="en">Jul 2021 · updated Mar 2024</span></dd></div>
+      <div><dt><span data-lang="pt">Formato</span><span data-lang="en">Format</span></dt><dd><span data-lang="pt">Artigo-índice de uma série de padrões</span><span data-lang="en">Hub article for a pattern series</span></dd></div>
+    </dl>
+  </section>
+
+  <nav class="toc" aria-label="Nesta página">
+    <a href="#resumo"><span data-lang="pt">1 · Resumo</span><span data-lang="en">1 · Summary</span></a>
+    <a href="#pros"><span data-lang="pt">2 · Vantagens e desvantagens</span><span data-lang="en">2 · Pros and cons</span></a>
+    <a href="#gestao"><span data-lang="pt">3 · Impacto na gestão</span><span data-lang="en">3 · Management impact</span></a>
+    <a href="#original"><span data-lang="pt">4 · Post original</span><span data-lang="en">4 · Original post</span></a>
+  </nav>
+
+  <!-- 1. RESUMO -->
+  <section class="block" id="resumo">
+    <h2><span class="num">01</span><span data-lang="pt">Resumo da ideia central</span><span data-lang="en">Summary of the central idea</span></h2>
+
+    <p data-lang="pt">Os autores, que passaram cerca de duas décadas ajudando grandes empresas a trocar sistemas legados, descrevem uma "esteira" comum: programas de modernização de 3 a 5 anos que, no meio do caminho, são atropelados por mudanças no negócio. Quando o projeto era "big bang" (tudo de uma vez), a maior parte do trabalho era jogada fora; quando era incremental, apenas se empilhava tecnologia nova sobre a antiga. Em ambos os casos o legado continuava ligado e as metas de economia e redução de risco não eram atingidas.</p>
+    <p data-lang="en">The authors, who spent about two decades helping large companies replace legacy systems, describe a common "treadmill": 3–5 year modernization programmes that get overtaken by business changes halfway through. With a "big bang" approach most of the work was thrown away; with incremental approaches, new technology was just stacked on top of the old. Either way the legacy stayed on and the cost-saving and risk-reduction goals went unmet.</p>
+
+    <h3><span data-lang="pt">Por que esses programas falhavam</span><span data-lang="en">Why those programmes failed</span></h3>
+    <div class="callouts">
+      <div class="callout">
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.2c3 .2 5.5 2.6 5.5 5.8"/></svg></span>
+        <p data-lang="pt"><strong>A organização não mudou.</strong> Trocar só a tecnologia e manter liderança, estrutura e forma de trabalho iguais tende a repetir os mesmos resultados.</p>
+        <p data-lang="en"><strong>The organization didn't change.</strong> Swapping only technology while keeping leadership, structure and ways of working the same tends to repeat the same results.</p>
+      </div>
+      <div class="callout">
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><path d="M8 3v8M16 13v8"/></svg></span>
+        <p data-lang="pt"><strong>Projeto separado do dia a dia.</strong> O negócio seguia evoluindo no sistema antigo, enquanto o novo seguia requisitos fechados no início; a distância entre os dois só crescia.</p>
+        <p data-lang="en"><strong>Project detached from day-to-day work.</strong> The business kept evolving on the old system while the new one followed requirements frozen at the start; the gap only widened.</p>
+      </div>
+      <div class="callout">
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="7" height="14" rx="1.5"/><rect x="14" y="5" width="7" height="14" rx="1.5"/><path d="M10 12h4"/></svg></span>
+        <p data-lang="pt"><strong>Busca por "paridade de funcionalidades".</strong> Prometer exatamente o que existe hoje, só que com tecnologia nova, obriga a mapear todo o legado e leva a uma virada única e arriscada.</p>
+        <p data-lang="en"><strong>Chasing "feature parity".</strong> Promising exactly what exists today, just on new technology, forces mapping the whole legacy and leads to a single risky cut-over.</p>
+      </div>
+      <div class="callout">
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v9h9"/></svg></span>
+        <p data-lang="pt"><strong>Tecnologia é só parte do problema.</strong> Pela experiência dos autores, ela responde por no máximo metade; forma de trabalho, estrutura e liderança pesam tanto quanto.</p>
+        <p data-lang="en"><strong>Technology is only part of the problem.</strong> In the authors' experience it accounts for at most half; ways of working, structure and leadership matter just as much.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:36px"><span data-lang="pt">As quatro atividades para quebrar o ciclo</span><span data-lang="en">The four activities to break the cycle</span></h3>
+    <ol class="steps">
+      <li>
+        <h3><span data-lang="pt">Entender os resultados desejados</span><span data-lang="en">Understand the desired outcomes</span></h3>
+        <p data-lang="pt">Alinhar o porquê: reduzir o custo de mudança, melhorar o processo de negócio, aposentar um sistema sem suporte ou reagir a uma ameaça externa. "Ter tecnologia nova" sozinho não é motivo.</p>
+        <p data-lang="en">Agree on the why: lower the cost of change, improve the business process, retire an unsupported system or respond to an external threat. "Having newer tech" alone is not a reason.</p>
+      </li>
+      <li>
+        <h3><span data-lang="pt">Dividir o problema em partes</span><span data-lang="en">Break the problem into parts</span></h3>
+        <p data-lang="pt">Encontrar "costuras" (seams) no negócio e na tecnologia, ligando partes do sistema a capacidades de negócio que possam ser entregues com poucas dependências. Técnicas como Event Storming ajudam.</p>
+        <p data-lang="en">Find "seams" in the business and the technology, mapping system parts to business capabilities that can be delivered with few dependencies. Techniques like Event Storming help.</p>
+      </li>
+      <li>
+        <h3><span data-lang="pt">Entregar as partes com segurança</span><span data-lang="en">Deliver the parts safely</span></h3>
+        <p data-lang="pt">Fazer o novo conviver com o antigo e assumir o trabalho aos poucos, com entrega contínua e estratégias como execução em paralelo e desvio gradual do fluxo.</p>
+        <p data-lang="en">Let the new coexist with the old and take over gradually, with continuous delivery and strategies such as parallel runs and gradual flow diversion.</p>
+      </li>
+      <li>
+        <h3><span data-lang="pt">Mudar a organização</span><span data-lang="en">Change the organization</span></h3>
+        <p data-lang="pt">Ajustar times e processos à nova arquitetura (Lei de Conway) e proteger o novo jeito de trabalhar dos "anticorpos corporativos", senão o legado volta em poucos anos.</p>
+        <p data-lang="en">Fit teams and processes to the new architecture (Conway's Law) and protect the new way of working from "corporate antibodies", or the legacy comes back within a few years.</p>
+      </li>
+    </ol>
+
+    <figure class="diagram" role="img" aria-label="Diagrama em três etapas: um roteador direciona o tráfego primeiro todo para o legado, depois parte para o sistema novo e, ao final, todo para o novo, quando o legado é desligado.">
+      <div class="scroll">
+        <svg viewBox="0 0 760 250" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0L10 5L0 10z" class="d-head"/>
+            </marker>
+          </defs>
+
+          <!-- Etapa 1 -->
+          <text x="20" y="22" class="d-label" data-lang="pt">ETAPA 1 · INTERCEPTAR</text>
+          <text x="20" y="22" class="d-label" data-lang="en">STEP 1 · INTERCEPT</text>
+          <rect x="20" y="96" width="60" height="44" rx="8" class="d-acc"/>
+          <text x="50" y="123" text-anchor="middle" class="d-in" data-lang="pt">Rota</text>
+          <text x="50" y="123" text-anchor="middle" class="d-in" data-lang="en">Router</text>
+          <line x1="82" y1="110" x2="128" y2="70" class="d-line" marker-end="url(#ah2)"/>
+          <rect x="132" y="40" width="96" height="56" rx="8" class="d-legacy"/>
+          <text x="180" y="73" text-anchor="middle" class="d-in" data-lang="pt">Legado</text>
+          <text x="180" y="73" text-anchor="middle" class="d-in" data-lang="en">Legacy</text>
+          <text x="180" y="112" text-anchor="middle" class="d-small">100%</text>
+          <rect x="132" y="150" width="96" height="56" rx="8" fill="none" class="d-outline" stroke-dasharray="4 4"/>
+          <text x="180" y="183" text-anchor="middle" class="d-small" data-lang="pt">novo (vazio)</text>
+          <text x="180" y="183" text-anchor="middle" class="d-small" data-lang="en">new (empty)</text>
+
+          <line x1="258" y1="30" x2="258" y2="230" class="d-sep"/>
+
+          <!-- Etapa 2 -->
+          <text x="276" y="22" class="d-label" data-lang="pt">ETAPA 2 · CONVIVER</text>
+          <text x="276" y="22" class="d-label" data-lang="en">STEP 2 · COEXIST</text>
+          <rect x="276" y="96" width="60" height="44" rx="8" class="d-acc"/>
+          <text x="306" y="123" text-anchor="middle" class="d-in" data-lang="pt">Rota</text>
+          <text x="306" y="123" text-anchor="middle" class="d-in" data-lang="en">Router</text>
+          <line x1="338" y1="110" x2="384" y2="70" class="d-line" marker-end="url(#ah2)"/>
+          <line x1="338" y1="126" x2="384" y2="168" class="d-line" marker-end="url(#ah2)"/>
+          <rect x="388" y="40" width="96" height="56" rx="8" class="d-legacy"/>
+          <text x="436" y="73" text-anchor="middle" class="d-in" data-lang="pt">Legado</text>
+          <text x="436" y="73" text-anchor="middle" class="d-in" data-lang="en">Legacy</text>
+          <text x="436" y="112" text-anchor="middle" class="d-small">60%</text>
+          <rect x="388" y="150" width="96" height="56" rx="8" class="d-acc"/>
+          <text x="436" y="183" text-anchor="middle" class="d-in" data-lang="pt">Novo</text>
+          <text x="436" y="183" text-anchor="middle" class="d-in" data-lang="en">New</text>
+          <text x="436" y="224" text-anchor="middle" class="d-small">40%</text>
+
+          <line x1="514" y1="30" x2="514" y2="230" class="d-sep"/>
+
+          <!-- Etapa 3 -->
+          <text x="532" y="22" class="d-label" data-lang="pt">ETAPA 3 · DESLIGAR</text>
+          <text x="532" y="22" class="d-label" data-lang="en">STEP 3 · RETIRE</text>
+          <rect x="532" y="96" width="60" height="44" rx="8" class="d-acc"/>
+          <text x="562" y="123" text-anchor="middle" class="d-in" data-lang="pt">Rota</text>
+          <text x="562" y="123" text-anchor="middle" class="d-in" data-lang="en">Router</text>
+          <line x1="594" y1="126" x2="640" y2="168" class="d-line" marker-end="url(#ah2)"/>
+          <rect x="644" y="40" width="96" height="56" rx="8" fill="none" class="d-outline" stroke-dasharray="4 4"/>
+          <line x1="660" y1="50" x2="724" y2="86" class="d-hatchline"/>
+          <line x1="724" y1="50" x2="660" y2="86" class="d-hatchline"/>
+          <text x="692" y="112" text-anchor="middle" class="d-small" data-lang="pt">desligado</text>
+          <text x="692" y="112" text-anchor="middle" class="d-small" data-lang="en">retired</text>
+          <rect x="644" y="150" width="96" height="56" rx="8" class="d-accfill"/>
+          <text x="692" y="183" text-anchor="middle" class="d-in" fill="#fff" style="fill:var(--surface)" data-lang="pt">Novo</text>
+          <text x="692" y="183" text-anchor="middle" class="d-in" fill="#fff" style="fill:var(--surface)" data-lang="en">New</text>
+          <text x="692" y="224" text-anchor="middle" class="d-small">100%</text>
+        </svg>
+      </div>
+      <figcaption>
+        <span data-lang="pt">Figura da equipe, simplificando o exemplo do artigo: um roteador de eventos é inserido sem mudar o comportamento, depois passa a enviar produtos ao sistema novo pouco a pouco, até o legado poder ser desligado.</span>
+        <span data-lang="en">Team-made figure simplifying the article's example: an event router is inserted without changing behaviour, then gradually sends products to the new system until the legacy can be switched off.</span>
+      </figcaption>
+    </figure>
+
+    <h3><span data-lang="pt">Alguns padrões citados no artigo</span><span data-lang="en">Some patterns cited in the article</span></h3>
+    <ul class="chips">
+      <li><span data-lang="pt"><strong>Event Interception:</strong> capturar as atualizações de estado e desviar parte delas para o componente novo.</span><span data-lang="en"><strong>Event Interception:</strong> capture state updates and route some of them to the new component.</span></li>
+      <li><span data-lang="pt"><strong>Legacy Mimic:</strong> o sistema novo conversa com o antigo de um jeito que o antigo nem percebe a mudança.</span><span data-lang="en"><strong>Legacy Mimic:</strong> the new system talks to the old one so the old one doesn't notice any change.</span></li>
+      <li><span data-lang="pt"><strong>Transitional Architecture:</strong> peças temporárias criadas só para facilitar a troca e removidas no final.</span><span data-lang="en"><strong>Transitional Architecture:</strong> temporary pieces built only to ease the swap and removed at the end.</span></li>
+      <li><span data-lang="pt"><strong>Divert the Flow:</strong> tirar primeiro do legado as atividades que atravessam toda a organização.</span><span data-lang="en"><strong>Divert the Flow:</strong> first move organization-wide activities away from the legacy.</span></li>
+      <li><span data-lang="pt"><strong>Canary Release:</strong> liberar a mudança para um grupo pequeno de usuários antes de todos.</span><span data-lang="en"><strong>Canary Release:</strong> roll out a change to a small group of users before everyone.</span></li>
+      <li><span data-lang="pt"><strong>Feature Parity (cuidado):</strong> copiar tudo o que o legado faz em tecnologia nova; os autores mostram por que costuma dar errado.</span><span data-lang="en"><strong>Feature Parity (beware):</strong> copy everything the legacy does on new tech; the authors show why it usually goes wrong.</span></li>
+    </ul>
+  </section>
+
+  <!-- 2. VANTAGENS E DESVANTAGENS -->
+  <section class="block" id="pros">
+    <h2><span class="num">02</span><span data-lang="pt">Vantagens e desvantagens</span><span data-lang="en">Pros and cons</span></h2>
+    <div class="pc">
+      <div class="pc-col pro">
+        <h3><span class="badge">+</span><span data-lang="pt">Vantagens</span><span data-lang="en">Advantages</span></h3>
+        <ul class="list">
+          <li><span data-lang="pt">O negócio continua recebendo melhorias enquanto a tecnologia é trocada.</span><span data-lang="en">The business keeps getting improvements while the technology is replaced.</span></li>
+          <li><span data-lang="pt">Cada parte entregue gera valor e aprendizado, em vez de esperar anos pelo "dia D".</span><span data-lang="en">Each delivered part brings value and learning instead of waiting years for "D-day".</span></li>
+          <li><span data-lang="pt">O risco é controlado: dá para testar com poucos itens ou usuários e voltar atrás.</span><span data-lang="en">Risk is controlled: you can test with few items or users and roll back.</span></li>
+          <li><span data-lang="pt">O legado é efetivamente desligado, o que gera economia real de licenças e suporte.</span><span data-lang="en">The legacy is actually switched off, delivering real savings on licences and support.</span></li>
+          <li><span data-lang="pt">Obriga a alinhar objetivos de negócio antes de escolher tecnologia.</span><span data-lang="en">Forces business goals to be aligned before choosing technology.</span></li>
+        </ul>
+      </div>
+      <div class="pc-col con">
+        <h3><span class="badge">−</span><span data-lang="pt">Desvantagens</span><span data-lang="en">Disadvantages</span></h3>
+        <ul class="list">
+          <li><span data-lang="pt">A arquitetura de transição custa dinheiro e depois é descartada, o que pode parecer desperdício.</span><span data-lang="en">Transitional architecture costs money and is later discarded, which may look like waste.</span></li>
+          <li><span data-lang="pt">Encontrar as "costuras" em sistemas antigos e mal documentados é difícil no começo.</span><span data-lang="en">Finding "seams" in old, poorly documented systems is hard at first.</span></li>
+          <li><span data-lang="pt">Por um período, dois sistemas convivem e precisam ser mantidos e integrados.</span><span data-lang="en">For a while two systems coexist and must be maintained and integrated.</span></li>
+          <li><span data-lang="pt">Dependências escondidas aparecem tarde (no exemplo, relatórios que deixaram de bater).</span><span data-lang="en">Hidden dependencies show up late (in the example, reports that stopped matching).</span></li>
+          <li><span data-lang="pt">Exige mudança cultural e de liderança, que costuma encontrar resistência.</span><span data-lang="en">Requires cultural and leadership change, which usually meets resistance.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. IMPACTO NA GESTÃO -->
+  <section class="block" id="gestao">
+    <h2><span class="num">03</span><span data-lang="pt">Impacto na gestão do projeto</span><span data-lang="en">Impact on project management</span></h2>
+    <div class="impact">
+      <article class="imp">
+        <header>
+          <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          <div><span class="tag"><span data-lang="pt">Prazo</span><span data-lang="en">Schedule</span></span><h3><span data-lang="pt">Ciclos curtos, não um marco único</span><span data-lang="en">Short cycles, not a single milestone</span></h3></div>
+        </header>
+        <p data-lang="pt">O cronograma deixa de ser um programa de vários anos com uma virada final e passa a ser uma sequência de entregas menores. Cada fatia tem seu próprio marco, o que facilita acompanhar o progresso e replanejar quando o negócio muda.</p>
+        <p data-lang="en">The schedule stops being a multi-year programme with one final cut-over and becomes a sequence of smaller deliveries. Each slice has its own milestone, making progress easier to track and replanning easier when the business changes.</p>
+      </article>
+      <article class="imp">
+        <header>
+          <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg></span>
+          <div><span class="tag"><span data-lang="pt">Custo</span><span data-lang="en">Cost</span></span><h3><span data-lang="pt">Investir em transição para economizar</span><span data-lang="en">Invest in transition to save</span></h3></div>
+        </header>
+        <p data-lang="pt">Há um gasto extra com peças temporárias (roteadores, adaptadores). Os autores recomendam tornar explícito esse equilíbrio entre "valor da mitigação de risco" e "custo da arquitetura de transição". Em troca, evita-se jogar fora anos de trabalho e a economia com o legado desligado aparece de fato.</p>
+        <p data-lang="en">There is extra spending on temporary pieces (routers, adapters). The authors recommend making the trade-off between "value of risk mitigation" and "cost of transitional architecture" explicit. In return, years of work aren't thrown away and the savings from retiring the legacy really materialize.</p>
+      </article>
+      <article class="imp">
+        <header>
+          <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.2c3 .2 5.5 2.6 5.5 5.8"/></svg></span>
+          <div><span class="tag"><span data-lang="pt">Equipe</span><span data-lang="en">Team</span></span><h3><span data-lang="pt">Organizar times pela nova arquitetura</span><span data-lang="en">Organize teams around the new architecture</span></h3></div>
+        </header>
+        <p data-lang="pt">Pela Lei de Conway, os times devem ser reorganizados conforme a arquitetura desejada. O gestor precisa envolver os usuários e quem conhece o legado, adotar entrega contínua e defender o novo modelo de processos burocráticos que o sufocam.</p>
+        <p data-lang="en">Under Conway's Law, teams should be reorganized to match the target architecture. The manager must involve users and legacy experts, adopt continuous delivery and shield the new model from bureaucratic processes that would smother it.</p>
+      </article>
+      <article class="imp">
+        <header>
+          <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v4"/><path d="M12 17.5v.01"/></svg></span>
+          <div><span class="tag"><span data-lang="pt">Riscos</span><span data-lang="en">Risks</span></span><h3><span data-lang="pt">Risco fatiado e reversível</span><span data-lang="en">Sliced, reversible risk</span></h3></div>
+        </header>
+        <p data-lang="pt">Em vez de concentrar todo o risco num corte único, ele é distribuído em passos pequenos que podem ser testados e desfeitos. Restam riscos a mapear: dependências ocultas do legado, desalinhamento de objetivos entre áreas e resistência organizacional.</p>
+        <p data-lang="en">Instead of concentrating all risk in one cut-over, it's spread across small steps that can be tested and undone. Remaining risks to map: hidden legacy dependencies, misaligned goals between departments and organizational resistance.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- 4. POST ORIGINAL -->
+  <section class="block" id="original">
+    <h2><span class="num">04</span><span data-lang="pt">Post original</span><span data-lang="en">Original post</span></h2>
+    <div class="source">
+      <div>
+        <span class="k">martinfowler.com · articles</span>
+        <h3>Patterns of Legacy Displacement</h3>
+        <p class="url">https://martinfowler.com/articles/patterns-legacy-displacement/</p>
+      </div>
+      <a class="btn" href="https://martinfowler.com/articles/patterns-legacy-displacement/" target="_blank" rel="noopener"><span data-lang="pt">Ler o original</span><span data-lang="en">Read the original</span> ↗</a>
+    </div>
+  </section>
+
+  <nav class="pager" aria-label="Navegação entre páginas">
+    <a href="monolith-first.html">
+      <span class="dir"><span data-lang="pt">Anterior · Eixo 1</span><span data-lang="en">Previous · Axis 1</span></span>
+      <span class="t">← <span data-lang="pt">Monólito Primeiro</span><span data-lang="en">Monolith First</span></span>
+    </a>
+    <a class="next" href="layering.html">
+      <span class="dir"><span data-lang="pt">Próximo · Eixo 3</span><span data-lang="en">Next · Axis 3</span></span>
+      <span class="t"><span data-lang="pt">Camadas</span><span data-lang="en">Layering</span> →</span>
+    </a>
+  </nav>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <p><span data-lang="pt">Atividade "Guia Web de Arquitetura de Software" · UC Gestão de Projetos · Faculdade de Tecnologia SENAI Félix Guisard · 2026</span><span data-lang="en">"Software Architecture Web Guide" assignment · Project Management course · SENAI Félix Guisard College of Technology · 2026</span></p>
+    <p><span data-lang="pt">Resumo escrito pela equipe com apoio de IA e conferido com o texto original.</span><span data-lang="en">Summary written by the team with AI assistance and checked against the original text.</span></p>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>

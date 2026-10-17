@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="pt-BR" data-ui="pt"
+      data-title-pt="Guia Web de Arquitetura de Software"
+      data-title-en="Software Architecture Web Guide">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guia Web de Arquitetura de Software</title>
+  <meta name="description" content="Três conceitos de arquitetura de software e seus impactos na gestão de projetos: prazo, custo, equipe e riscos.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="index.html">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+        <rect x="2" y="2" width="22" height="6" rx="1.5" fill="#c2410c"/>
+        <rect x="2" y="10" width="22" height="6" rx="1.5" fill="#0e7490"/>
+        <rect x="2" y="18" width="22" height="6" rx="1.5" fill="#6d28d9"/>
+      </svg>
+      <span><span data-lang="pt">Guia de Arquitetura</span><span data-lang="en">Architecture Guide</span> <b>/ GP</b></span>
+    </a>
+    <nav class="nav" aria-label="Páginas" data-aria-pt="Páginas" data-aria-en="Pages">
+      <a href="index.html" aria-current="page"><span data-lang="pt">Início</span><span data-lang="en">Home</span></a>
+      <a href="monolith-first.html"><span data-lang="pt">Monólito Primeiro</span><span data-lang="en">Monolith First</span></a>
+      <a href="legacy-displacement.html"><span data-lang="pt">Substituição de Legado</span><span data-lang="en">Legacy Displacement</span></a>
+      <a href="layering.html"><span data-lang="pt">Camadas</span><span data-lang="en">Layering</span></a>
+    </nav>
+    <div class="lang" role="group" aria-label="Idioma / Language">
+      <button type="button" data-set-lang="pt" aria-pressed="true">PT</button>
+      <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- Abertura -->
+  <section class="hero wrap">
+    <span class="kicker reveal">
+      <span data-lang="pt">Gestão de Projetos · ADS · SENAI Félix Guisard</span>
+      <span data-lang="en">Project Management · Systems Analysis &amp; Development · SENAI Félix Guisard</span>
+    </span>
+    <h1 class="reveal d2">
+      <span data-lang="pt">Arquitetura de software também é decisão de gestão.</span>
+      <span data-lang="en">Software architecture is also a management decision.</span>
+    </h1>
+    <p class="lead reveal d3">
+      <span data-lang="pt">Três textos publicados em martinfowler.com, explicados, resumidos e lidos pela ótica de quem administra um projeto: o que cada ideia muda no prazo, no custo, na equipe e nos riscos.</span>
+      <span data-lang="en">Three articles published on martinfowler.com, explained in our own words and read from a project manager's point of view: what each idea changes in schedule, cost, team and risk.</span>
+    </p>
+    <div class="path reveal d3" aria-label="Trilha de leitura">
+      <span class="p ax1"><i>01</i><span data-lang="pt">Como começar</span><span data-lang="en">How to start</span></span>
+      <span aria-hidden="true">→</span>
+      <span class="p ax2"><i>02</i><span data-lang="pt">Como substituir o antigo</span><span data-lang="en">How to replace the old</span></span>
+      <span aria-hidden="true">→</span>
+      <span class="p ax3"><i>03</i><span data-lang="pt">Como organizar por dentro</span><span data-lang="en">How to organize inside</span></span>
+    </div>
+  </section>
+
+  <!-- Os três posts -->
+  <section class="block wrap" id="posts">
+    <h2><span data-lang="pt">Os três conceitos</span><span data-lang="en">The three concepts</span></h2>
+    <div class="posts">
+
+      <a class="post-card ax1 reveal" href="monolith-first.html">
+        <span class="axis-tag"><span data-lang="pt">Eixo 1 · Microsserviços</span><span data-lang="en">Axis 1 · Microservices</span></span>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 300 84">
+            <rect x="8" y="10" width="96" height="64" rx="8" fill="var(--a1-soft)" stroke="var(--a1)" stroke-width="2"/>
+            <line x1="56" y1="10" x2="56" y2="74" stroke="var(--a1)" stroke-dasharray="3 4"/>
+            <line x1="8" y1="42" x2="104" y2="42" stroke="var(--a1)" stroke-dasharray="3 4"/>
+            <path d="M124 42h44" stroke="var(--muted)" stroke-width="2"/>
+            <path d="M162 36l8 6-8 6" fill="none" stroke="var(--muted)" stroke-width="2"/>
+            <rect x="190" y="10" width="44" height="28" rx="6" fill="var(--a1)"/>
+            <rect x="244" y="10" width="44" height="28" rx="6" fill="var(--a1)" opacity=".75"/>
+            <rect x="190" y="46" width="44" height="28" rx="6" fill="var(--a1)" opacity=".55"/>
+            <rect x="244" y="46" width="44" height="28" rx="6" fill="var(--a1)" opacity=".35"/>
+          </svg>
+        </div>
+        <h3><span data-lang="pt">Monólito Primeiro</span><span data-lang="en">Monolith First</span></h3>
+        <p class="idea">
+          <span data-lang="pt">Comece com um monólito bem dividido por dentro e só separe em microsserviços quando as fronteiras estiverem claras e a necessidade for real.</span>
+          <span data-lang="en">Start with a well-modularized monolith and split into microservices only when boundaries are clear and the need is real.</span>
+        </p>
+        <span class="by">Martin Fowler · 2015</span>
+        <span class="go"><span data-lang="pt">Ler a página →</span><span data-lang="en">Read the page →</span></span>
+      </a>
+
+      <a class="post-card ax2 reveal d2" href="legacy-displacement.html">
+        <span class="axis-tag"><span data-lang="pt">Eixo 2 · Fronteiras e evolução</span><span data-lang="en">Axis 2 · Boundaries &amp; evolution</span></span>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 300 84">
+            <rect x="8" y="10" width="110" height="64" rx="8" fill="var(--line)"/>
+            <rect x="8" y="10" width="110" height="64" rx="8" fill="none" stroke="var(--muted)" stroke-dasharray="4 4"/>
+            <text x="63" y="47" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--muted)" data-lang="pt">LEGADO</text>
+            <text x="63" y="47" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="var(--muted)" data-lang="en">LEGACY</text>
+            <path d="M128 26h40M128 42h40M128 58h40" stroke="var(--a2)" stroke-width="2" stroke-dasharray="2 4"/>
+            <rect x="182" y="10" width="34" height="64" rx="6" fill="var(--a2)"/>
+            <rect x="224" y="10" width="34" height="64" rx="6" fill="var(--a2)" opacity=".6"/>
+            <rect x="266" y="10" width="26" height="64" rx="6" fill="none" stroke="var(--a2)" stroke-width="2" stroke-dasharray="4 4"/>
+          </svg>
+        </div>
+        <h3><span data-lang="pt">Padrões de Substituição de Legado</span><span data-lang="en">Patterns of Legacy Displacement</span></h3>
+        <p class="idea">
+          <span data-lang="pt">Trocar um sistema legado aos poucos, em partes entregues com segurança, em vez de apostar numa reescrita completa de uma vez.</span>
+          <span data-lang="en">Replace a legacy system gradually, in safely delivered parts, instead of betting on a full rewrite all at once.</span>
+        </p>
+        <span class="by">Ian Cartwright, Rob Horn, James Lewis · 2021–2024</span>
+        <span class="go"><span data-lang="pt">Ler a página →</span><span data-lang="en">Read the page →</span></span>
+      </a>
+
+      <a class="post-card ax3 reveal d3" href="layering.html">
+        <span class="axis-tag"><span data-lang="pt">Eixo 3 · Camadas e execução</span><span data-lang="en">Axis 3 · Layers &amp; execution</span></span>
+        <div class="art" aria-hidden="true">
+          <svg viewBox="0 0 300 84">
+            <rect x="40" y="6" width="220" height="20" rx="5" fill="var(--a3)"/>
+            <rect x="40" y="32" width="220" height="20" rx="5" fill="var(--a3)" opacity=".65"/>
+            <rect x="40" y="58" width="220" height="20" rx="5" fill="var(--a3)" opacity=".35"/>
+            <path d="M22 12v58" stroke="var(--muted)" stroke-width="2"/>
+            <path d="M16 64l6 8 6-8" fill="none" stroke="var(--muted)" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3><span data-lang="pt">Camadas: Apresentação, Domínio e Dados</span><span data-lang="en">Presentation Domain Data Layering</span></h3>
+        <p class="idea">
+          <span data-lang="pt">Separar o programa em três camadas, interface, regras de negócio e acesso a dados, para pensar, testar e trocar cada parte com mais independência.</span>
+          <span data-lang="en">Split the program into three layers, interface, business rules and data access, to reason about, test and swap each part more independently.</span>
+        </p>
+        <span class="by">Martin Fowler · 2015</span>
+        <span class="go"><span data-lang="pt">Ler a página →</span><span data-lang="en">Read the page →</span></span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- Matriz comparativa -->
+  <section class="block wrap" id="matriz">
+    <h2><span data-lang="pt">Visão rápida do impacto na gestão</span><span data-lang="en">Management impact at a glance</span></h2>
+    <div class="matrix-wrap">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th scope="col"><span data-lang="pt">Conceito</span><span data-lang="en">Concept</span></th>
+            <th scope="col"><span data-lang="pt">Prazo</span><span data-lang="en">Schedule</span></th>
+            <th scope="col"><span data-lang="pt">Custo</span><span data-lang="en">Cost</span></th>
+            <th scope="col"><span data-lang="pt">Equipe</span><span data-lang="en">Team</span></th>
+            <th scope="col"><span data-lang="pt">Riscos</span><span data-lang="en">Risks</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="ax1">
+            <th scope="row"><span data-lang="pt">Monólito Primeiro</span><span data-lang="en">Monolith First</span></th>
+            <td><span data-lang="pt">Primeira versão no ar mais cedo.</span><span data-lang="en">First version live sooner.</span></td>
+            <td><span data-lang="pt">Evita pagar a infraestrutura de serviços antes da hora.</span><span data-lang="en">Avoids paying for service infrastructure too early.</span></td>
+            <td><span data-lang="pt">Equipe pequena, uma base de código.</span><span data-lang="en">Small team, one codebase.</span></td>
+            <td><span data-lang="pt">Menor risco de fronteiras erradas; risco de o monólito virar emaranhado.</span><span data-lang="en">Lower risk of wrong boundaries; risk of the monolith becoming tangled.</span></td>
+          </tr>
+          <tr class="ax2">
+            <th scope="row"><span data-lang="pt">Substituição de Legado</span><span data-lang="en">Legacy Displacement</span></th>
+            <td><span data-lang="pt">Entregas contínuas em vez de um único "dia D".</span><span data-lang="en">Continuous deliveries instead of a single "D-day".</span></td>
+            <td><span data-lang="pt">Paga a arquitetura de transição, mas desliga o legado de verdade.</span><span data-lang="en">Pays for transitional architecture but truly retires the legacy.</span></td>
+            <td><span data-lang="pt">Exige mudar estrutura, processos e liderança.</span><span data-lang="en">Requires changing structure, processes and leadership.</span></td>
+            <td><span data-lang="pt">Risco diluído em passos pequenos e reversíveis.</span><span data-lang="en">Risk spread across small, reversible steps.</span></td>
+          </tr>
+          <tr class="ax3">
+            <th scope="row"><span data-lang="pt">Camadas</span><span data-lang="en">Layering</span></th>
+            <td><span data-lang="pt">Mudanças localizadas e mais rápidas de fazer.</span><span data-lang="en">Localized changes that are quicker to make.</span></td>
+            <td><span data-lang="pt">Manutenção e testes mais baratos.</span><span data-lang="en">Cheaper maintenance and testing.</span></td>
+            <td><span data-lang="pt">Times completos, não um time por camada.</span><span data-lang="en">Full-stack teams, not one team per layer.</span></td>
+            <td><span data-lang="pt">Menos efeito colateral; excesso de camadas em sistemas grandes.</span><span data-lang="en">Fewer side effects; too many layers in large systems.</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Equipe -->
+  <section class="block wrap" id="equipe">
+    <h2><span data-lang="pt">Equipe</span><span data-lang="en">Team</span></h2>
+    <div class="team">
+      <!-- Fotos: coloque os arquivos em fotos/integrante1.jpg e fotos/integrante2.jpg.
+           Se a foto não for encontrada, as iniciais aparecem no lugar. -->
+      <div class="member">
+        <span class="photo">
+          <span class="initials" aria-hidden="true">JC</span>
+          <img src="fotos/integrante1.jpg" alt="Foto de Julio César Santos de Morais" loading="lazy" onerror="this.remove()">
+        </span>
+        <div>
+          <span class="role"><span data-lang="pt">Integrante 1</span><span data-lang="en">Member 1</span></span>
+          <strong>Julio César Santos de Morais</strong>
+          <small>RA 25172737</small>
+        </div>
+      </div>
+      <!-- Integrante 2: troque o nome, as iniciais, o texto da foto (alt) e o RA. -->
+      <div class="member">
+        <span class="photo">
+          <span class="initials" aria-hidden="true">I2</span>
+          <img src="fotos/integrante2.jpg" alt="Foto do integrante 2" loading="lazy" onerror="this.remove()">
+        </span>
+        <div>
+          <span class="role"><span data-lang="pt">Integrante 2</span><span data-lang="en">Member 2</span></span>
+          <strong>Hugo Otávio dos Santos de Paula</strong>
+          <small>RA 25172710</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <p data-lang="pt">Os resumos foram escritos com apoio de IA e conferidos pela equipe com os textos originais. Detalhes no arquivo README.md do repositório.</p>
+      <p data-lang="en">Summaries were written with AI assistance and checked by the team against the original texts. Details in the repository's README.md.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <p><span data-lang="pt">Atividade "Guia Web de Arquitetura de Software" · UC Gestão de Projetos · Faculdade de Tecnologia SENAI Félix Guisard · 2026</span><span data-lang="en">"Software Architecture Web Guide" assignment · Project Management course · SENAI Félix Guisard College of Technology · 2026</span></p>
+    <p><span data-lang="pt">Os textos originais pertencem aos seus autores e estão em martinfowler.com.</span><span data-lang="en">Original texts belong to their authors and are available at martinfowler.com.</span></p>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>
